@@ -1,10 +1,14 @@
-﻿using System;
+﻿using MovieMaker.Helpers;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 using Windows.Media.Editing;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace MovieMaker.ViewModel
 {
@@ -56,11 +60,11 @@ namespace MovieMaker.ViewModel
 
         public async Task PickFileAndAddClipAsync()
         {
-            var picker = new Windows.Storage.Pickers.FileOpenPicker
+            var picker = new FileOpenPicker
             {
-                SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.VideosLibrary,
+                SuggestedStartLocation = PickerLocationId.VideosLibrary,
             };
-            picker.FileTypeFilter.Add(".mp4");
+            AddVideoTypesFilters(picker);
 
             var pickedFile = await picker.PickSingleFileAsync();
 
@@ -70,7 +74,13 @@ namespace MovieMaker.ViewModel
             }
 
         }
-
+        private static void AddVideoTypesFilters(FileOpenPicker picker)
+        {
+            foreach (var videoFormat in Constants.VideoFormats)
+            {
+                picker.FileTypeFilter.Add(videoFormat);
+            }
+        }
         private async Task AddClipAsync(StorageFile pickedFile)
         {
             var clip = await MediaClip.CreateFromFileAsync(pickedFile);
