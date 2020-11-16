@@ -62,7 +62,7 @@
         <Grid Background="Black" Height="60" Grid.Row="2" Opacity="0.8">
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button Background="Transparent" 
-                        Click="{x:Bind ViewModel.PickFileAndAddClip}">
+                        Click="{x:Bind ViewModel.PickFileAndAddClipAsync}">
                     <StackPanel>
                         <SymbolIcon Symbol="Slideshow" Margin="0,-5,0,5"/>
                         <TextBlock Text="Add Clip"/>
