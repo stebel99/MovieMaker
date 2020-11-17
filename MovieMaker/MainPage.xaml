@@ -3,10 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:MovieMaker"
-    xmlns:helpers="using:MovieMaker.Helpers"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="using:MovieMaker.ViewModel" 
+    xmlns:model="using:MovieMaker.Models"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
@@ -50,14 +50,35 @@
                             AutoPlay="False" 
                             MaxWidth="1000"
                             Margin="100,0,100,0"
-                            Source="{x:Bind ViewModel.MediaSource, Mode=OneWay}"
-                            Visibility="{x:Bind ViewModel.CompositionIsNotEmpty, Mode=OneWay}"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             AreTransportControlsEnabled="True">
         </MediaPlayerElement>
         <Grid Grid.Row="1" Background="Black" Opacity="0.5" Height="210">
-
+            <ScrollViewer HorizontalScrollMode="Enabled"
+                          VerticalScrollMode="Disabled"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom">
+                <ListView x:Name="panelElements"
+                         ItemsSource="{x:Bind ViewModel.PanelElements}"
+                         SelectedItem="{x:Bind ViewModel.SelectedPanelElement}"
+                         >
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsStackPanel  Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:PanelElement" >
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{x:Bind Thumbnail,Converter={StaticResource ToImageConverter}}"
+                                       Width="100" Height="50"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
         </Grid>
         <Grid Background="Black" Height="60" Grid.Row="2" Opacity="0.8">
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">

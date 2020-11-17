@@ -1,7 +1,9 @@
 ﻿using MovieMaker.Helpers;
+using MovieMaker.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
@@ -14,11 +16,11 @@ namespace MovieMaker.ViewModel
 {
     public class MainPageViewModel : INotifyPropertyChanged
     {
+        public ObservableCollection<PanelElement> PanelElements;
+
+        private PanelElement selectedPanelElement;
+
         private MediaComposition composition;
-        private MediaSource mediaSource;
-
-        private bool compositionIsNotEmpty;
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propertyName = "")
@@ -26,37 +28,29 @@ namespace MovieMaker.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public MediaSource MediaSource
-        {
-            get { return mediaSource; }
-            set
-            {
-                if (mediaSource != value)
-                {
-                    mediaSource = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public bool CompositionIsNotEmpty
-        {
-            get { return compositionIsNotEmpty; }
-            set
-            {
-                if (compositionIsNotEmpty != value)
-                {
-                    compositionIsNotEmpty = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
         public MainPageViewModel()
         {
             composition = new MediaComposition();
-            mediaSource = null;
-            compositionIsNotEmpty = false;
+            PanelElements = new ObservableCollection<PanelElement>();
         }
+        public MainPageViewModel(ObservableCollection<PanelElement> panelElements)
+        {
+            PanelElements = panelElements;
+        }
+
+        public PanelElement SelectedPanelElement {
+            get { return selectedPanelElement; }
+            set
+            {
+                if (selectedPanelElement != value)
+                {
+                    selectedPanelElement = value;
+                    OnPropertyChanged();
+                }
+            } 
+        }
+
+
 
         public async Task PickFileAndAddClipAsync()
         {
@@ -70,13 +64,20 @@ namespace MovieMaker.ViewModel
 
             if (pickedFile != null)
             {
+                PanelElement element = new PanelElement();
+                element.Thumbnail = await pickedFile.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.VideosView);
+                element.MediaSource = MediaSource.CreateFromStorageFile(pickedFile);
+
+                PanelElements.Add(element);
+
                 await AddClipAsync(pickedFile).ConfigureAwait(true);
             }
 
         }
+
         private static void AddVideoTypesFilters(FileOpenPicker picker)
         {
-            foreach (var videoFormat in Constants.VideoFormats)
+            foreach (var videoFormat in Constants.Formats)
             {
                 picker.FileTypeFilter.Add(videoFormat);
             }
@@ -84,12 +85,7 @@ namespace MovieMaker.ViewModel
         private async Task AddClipAsync(StorageFile pickedFile)
         {
             var clip = await MediaClip.CreateFromFileAsync(pickedFile);
-
             composition.Clips.Add(clip);
-            CompositionIsNotEmpty = true;
-
-            var mediaStreamSource = composition.GenerateMediaStreamSource();
-            MediaSource = MediaSource.CreateFromMediaStreamSource(mediaStreamSource);
         }
     }
 }
