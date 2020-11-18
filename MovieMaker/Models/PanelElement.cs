@@ -16,7 +16,7 @@ namespace MovieMaker.Models
 
         public PanelElement()
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
         }
 
     }

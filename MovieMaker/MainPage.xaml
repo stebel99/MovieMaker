@@ -36,6 +36,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="19*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="6*"/>
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
@@ -52,16 +53,21 @@
                             Margin="100,0,100,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
+                            Visibility="{x:Bind ViewModel.PanelElementIsSelected ,Mode=OneWay}"
+                            Source="{x:Bind ViewModel.SelectedPanelElement.MediaSource , Mode=TwoWay}"
                             AreTransportControlsEnabled="True">
         </MediaPlayerElement>
-        <Grid Grid.Row="1" Background="Black" Opacity="0.5" Height="210">
+        <Grid Grid.Row="1" Opacity="0.5" Background="Black" Visibility="{x:Bind ViewModel.PanelElementIsSelected ,Mode=OneWay}">
+            
+        </Grid>
+        <Grid Grid.Row="2" Background="Black" Opacity="0.5">
             <ScrollViewer HorizontalScrollMode="Enabled"
                           VerticalScrollMode="Disabled"
                           HorizontalAlignment="Left"
                           VerticalAlignment="Bottom">
                 <ListView x:Name="panelElements"
                          ItemsSource="{x:Bind ViewModel.PanelElements}"
-                         SelectedItem="{x:Bind ViewModel.SelectedPanelElement}"
+                         SelectedItem="{x:Bind ViewModel.SelectedPanelElement , Mode=TwoWay}"
                          >
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -80,7 +86,7 @@
                 </ListView>
             </ScrollViewer>
         </Grid>
-        <Grid Background="Black" Height="60" Grid.Row="2" Opacity="0.8">
+        <Grid Background="Black" Height="60" Grid.Row="3" Opacity="0.8">
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button Background="Transparent" 
                         Click="{x:Bind ViewModel.PickFileAndAddClipAsync}">

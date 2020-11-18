@@ -19,6 +19,7 @@ namespace MovieMaker.ViewModel
         public ObservableCollection<PanelElement> PanelElements;
 
         private PanelElement selectedPanelElement;
+        private bool panelElementIsSelected;
 
         private MediaComposition composition;
 
@@ -38,18 +39,32 @@ namespace MovieMaker.ViewModel
             PanelElements = panelElements;
         }
 
-        public PanelElement SelectedPanelElement {
+        public PanelElement SelectedPanelElement
+        {
             get { return selectedPanelElement; }
             set
             {
-                if (selectedPanelElement != value)
+                if (selectedPanelElement != value && value != null)
                 {
                     selectedPanelElement = value;
                     OnPropertyChanged();
+                    PanelElementIsSelected = true;
                 }
-            } 
+            }
         }
 
+        public bool PanelElementIsSelected
+        {
+            get { return panelElementIsSelected; }
+            set
+            {
+                if (panelElementIsSelected != value)
+                {
+                    panelElementIsSelected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
 
         public async Task PickFileAndAddClipAsync()
