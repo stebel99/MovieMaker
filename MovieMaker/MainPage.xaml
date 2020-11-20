@@ -54,11 +54,11 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Visibility="{x:Bind ViewModel.PanelElementIsSelected ,Mode=OneWay}"
-                            Source="{x:Bind ViewModel.SelectedPanelElement.MediaSource , Mode=TwoWay}"
+                            Source="{x:Bind ViewModel.MediaSource, Mode=OneWay}"
                             AreTransportControlsEnabled="True">
         </MediaPlayerElement>
         <Grid Grid.Row="1" Opacity="0.5" Background="Black" Visibility="{x:Bind ViewModel.PanelElementIsSelected ,Mode=OneWay}">
-            
+
         </Grid>
         <Grid Grid.Row="2" Background="Black" Opacity="0.5">
             <ScrollViewer HorizontalScrollMode="Enabled"
@@ -68,18 +68,19 @@
                 <ListView x:Name="panelElements"
                          ItemsSource="{x:Bind ViewModel.PanelElements}"
                          SelectedItem="{x:Bind ViewModel.SelectedPanelElement , Mode=TwoWay}"
-                         >
+                          SelectionMode="Single">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <ItemsStackPanel  Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
-                    
+
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:PanelElement" >
                             <StackPanel Orientation="Horizontal">
-                                <Image Source="{x:Bind Thumbnail,Converter={StaticResource ToImageConverter}}"
-                                       Width="100" Height="50"/>
+                                    <Image Source="{x:Bind Thumbnail,Converter={StaticResource ToImageConverter}}"
+                                       Width="160" Height="90">
+                                    </Image>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

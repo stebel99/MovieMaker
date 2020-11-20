@@ -18,20 +18,22 @@ using Windows.UI.Core;
 
 namespace MovieMaker.ViewModel
 {
-    public class MainPageViewModel : INotifyPropertyChanged
+    public class MainPageViewModel : NotifyPropertyChanged
     {
         public ObservableCollection<PanelElement> PanelElements;
 
         private PanelElement selectedPanelElement;
         private bool panelElementIsSelected;
 
+        private MediaSource mediaSource;
+
         private MediaComposition composition;
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //private void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        //}
 
         public MainPageViewModel()
         {
@@ -41,6 +43,19 @@ namespace MovieMaker.ViewModel
         public MainPageViewModel(ObservableCollection<PanelElement> panelElements)
         {
             PanelElements = panelElements;
+        }
+
+        public MediaSource MediaSource
+        {
+            get { return mediaSource; }
+            set
+            {
+                if (mediaSource != value)
+                {
+                    mediaSource = value;
+                    OnPropertyChanged();
+                }
+            }
         }
 
         public PanelElement SelectedPanelElement
@@ -53,6 +68,7 @@ namespace MovieMaker.ViewModel
                     selectedPanelElement = value;
                     OnPropertyChanged();
                     PanelElementIsSelected = true;
+                    PanelElementChanged();
                 }
             }
         }
@@ -90,8 +106,7 @@ namespace MovieMaker.ViewModel
             {
                 PanelElement element = new PanelElement();
                 element.Thumbnail = await pickedFile.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.VideosView);
-
-                var clip = await AddClipAsync(pickedFile).ConfigureAwait(true);
+                element.Clip = await AddClipAsync(pickedFile).ConfigureAwait(true);
 
                 PanelElements.Add(element);
             }
@@ -134,6 +149,20 @@ namespace MovieMaker.ViewModel
             }
 
             return result;
+        }
+
+        public void PanelElementChanged()
+        {
+            var clip = SelectedPanelElement.Clip;
+            var index = composition.Clips.IndexOf(clip);
+            var mediaComposition = composition.Clone();
+
+            for (int i = 0; i < index; i++)
+            {
+                mediaComposition.Clips[i].TrimTimeFromStart = mediaComposition.Clips[i].OriginalDuration;
+            }
+
+            MediaSource = MediaSource.CreateFromMediaStreamSource(mediaComposition.GenerateMediaStreamSource());
         }
     }
 }

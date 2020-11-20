@@ -1,22 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Media.Core;
+﻿using MovieMaker.Helpers;
+using Windows.Media.Editing;
 using Windows.Storage.FileProperties;
 
 namespace MovieMaker.Models
 {
-    public class PanelElement
+    public class PanelElement : NotifyPropertyChanged
     {
-        public Guid Id { get; set; }
-        public MediaSource MediaSource { get; set; }
-        public StorageItemThumbnail Thumbnail { get; set; }
+        private MediaClip clip;
+        private StorageItemThumbnail thumbnail;
+
+        public MediaClip Clip {
+            get => clip;
+            set
+            {
+                if (clip != value)
+                {
+                    clip = value;
+                    OnPropertyChanged();
+                }
+            } 
+        }
+        public StorageItemThumbnail Thumbnail
+        {
+            get => thumbnail;
+            set
+            {
+                if (thumbnail != value)
+                {
+                    thumbnail = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public PanelElement()
         {
-            Id = Guid.NewGuid();
         }
 
     }
