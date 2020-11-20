@@ -7,10 +7,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Media.Core;
 using Windows.Media.Editing;
+using Windows.Media.MediaProperties;
+using Windows.Media.Transcoding;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.Core;
 
 namespace MovieMaker.ViewModel
 {
@@ -71,9 +75,14 @@ namespace MovieMaker.ViewModel
         {
             var picker = new FileOpenPicker
             {
-                SuggestedStartLocation = PickerLocationId.VideosLibrary,
+                SuggestedStartLocation = PickerLocationId.Desktop,
             };
-            AddVideoTypesFilters(picker);
+
+            AddTypesFilters(picker, Constants.VideoFormats);
+            AddTypesFilters(picker, Constants.PhotoFormats);
+
+            picker.ViewMode = PickerViewMode.Thumbnail;
+
 
             var pickedFile = await picker.PickSingleFileAsync();
 
@@ -81,26 +90,50 @@ namespace MovieMaker.ViewModel
             {
                 PanelElement element = new PanelElement();
                 element.Thumbnail = await pickedFile.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.VideosView);
-                element.MediaSource = MediaSource.CreateFromStorageFile(pickedFile);
+
+                var clip = await AddClipAsync(pickedFile).ConfigureAwait(true);
 
                 PanelElements.Add(element);
-
-                await AddClipAsync(pickedFile).ConfigureAwait(true);
             }
-
         }
-
-        private static void AddVideoTypesFilters(FileOpenPicker picker)
+        private static void AddTypesFilters(FileOpenPicker picker, string[] formats)
         {
-            foreach (var videoFormat in Constants.Formats)
+            foreach (var format in formats)
             {
-                picker.FileTypeFilter.Add(videoFormat);
+                picker.FileTypeFilter.Add(format);
             }
         }
-        private async Task AddClipAsync(StorageFile pickedFile)
+        private async Task<MediaClip> AddClipAsync(StorageFile pickedFile)
         {
-            var clip = await MediaClip.CreateFromFileAsync(pickedFile);
+            MediaClip clip;
+            bool isPhoto = PickedFileIsPhoto(pickedFile);
+
+            if (isPhoto)
+            {
+                clip = await MediaClip.CreateFromImageFileAsync(pickedFile, TimeSpan.FromSeconds(5));
+            }
+            else
+            {
+                clip = await MediaClip.CreateFromFileAsync(pickedFile);
+            }
+            
             composition.Clips.Add(clip);
+            return clip;
+        }
+
+        private static bool PickedFileIsPhoto(StorageFile pickedFile)
+        {
+            bool result = false;
+
+            foreach (var format in Constants.PhotoFormats)
+            {
+                if (format == pickedFile.FileType)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
         }
     }
 }
