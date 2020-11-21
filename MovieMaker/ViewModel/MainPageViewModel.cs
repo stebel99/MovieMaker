@@ -153,14 +153,9 @@ namespace MovieMaker.ViewModel
 
         public void PanelElementChanged()
         {
-            var clip = SelectedPanelElement.Clip;
-            var index = composition.Clips.IndexOf(clip);
-            var mediaComposition = composition.Clone();
-
-            for (int i = 0; i < index; i++)
-            {
-                mediaComposition.Clips[i].TrimTimeFromStart = mediaComposition.Clips[i].OriginalDuration;
-            }
+            var clip = SelectedPanelElement.Clip.Clone();
+            var mediaComposition = new MediaComposition();
+            mediaComposition.Clips.Add(clip);
 
             MediaSource = MediaSource.CreateFromMediaStreamSource(mediaComposition.GenerateMediaStreamSource());
         }
