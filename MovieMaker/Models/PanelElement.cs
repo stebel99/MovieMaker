@@ -1,13 +1,28 @@
 ﻿using MovieMaker.Helpers;
 using Windows.Media.Editing;
 using Windows.Storage.FileProperties;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace MovieMaker.Models
 {
     public class PanelElement : NotifyPropertyChanged
     {
         private MediaClip clip;
-        private StorageItemThumbnail thumbnail;
+        private BitmapImage thumbnail;
+        private string name;
+
+        public string Name
+        {
+            get => name;
+            set
+            {
+                if (name != value)
+                {
+                    name = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public MediaClip Clip {
             get => clip;
@@ -20,7 +35,7 @@ namespace MovieMaker.Models
                 }
             } 
         }
-        public StorageItemThumbnail Thumbnail
+        public BitmapImage Thumbnail
         {
             get => thumbnail;
             set

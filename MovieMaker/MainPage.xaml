@@ -74,14 +74,16 @@
         </Grid>
         <Grid Grid.Row="2" Background="Black" Opacity="0.5">
             <ListView x:Name="panelElements"
-                         ItemsSource="{x:Bind ViewModel.PanelElements}"
-                         SelectedItem="{x:Bind ViewModel.SelectedPanelElement , Mode=TwoWay}"
-                         SelectionMode="Single"  CornerRadius="5" Margin="20,10,20,60" Padding="0,0,0,10"
-                         Visibility="{x:Bind ViewModel.PanelElements.Count ,Mode=OneWay , Converter={StaticResource IntToVisibility}}"
-                         CanDragItems="True"
-                         ScrollViewer.HorizontalScrollMode="Enabled"
-                         ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                         ScrollViewer.VerticalScrollMode="Disabled">
+                      ItemsSource="{x:Bind ViewModel.PanelElements}"
+                      SelectedItem="{x:Bind ViewModel.SelectedPanelElement , Mode=TwoWay}"
+                      SelectionMode="Single"  CornerRadius="5" Margin="20,10,20,60" Padding="0,0,0,10"
+                      Visibility="{x:Bind ViewModel.PanelElements.Count ,Mode=OneWay , Converter={StaticResource IntToVisibility}}"
+                      CanDragItems="True"
+                      AllowDrop="True"
+                      CanReorderItems="True"
+                      IsSwipeEnabled="True"
+                      ScrollViewer.HorizontalScrollMode="Enabled"
+                      ScrollViewer.VerticalScrollMode="Disabled">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <ItemsStackPanel  Orientation="Horizontal" 
@@ -94,14 +96,14 @@
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:PanelElement" >
                         <Border Background="Black" CornerRadius="5"
-                                BorderThickness="2" BorderBrush="Gray" Padding="15,0,15,0">
-                            <Image Source="{x:Bind Thumbnail,Converter={StaticResource ToImageConverter}}" />
+                                BorderThickness="2" BorderBrush="Gray" Padding="15,0,15,0" MinHeight="40" MinWidth="70">
+                            <Image Source="{x:Bind Thumbnail , Mode=OneWay}" />
                         </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        
+
         <Grid Background="Black" Height="60" Grid.Row="3" Opacity="0.8">
             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button Background="Transparent" 

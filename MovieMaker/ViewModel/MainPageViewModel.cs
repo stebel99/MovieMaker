@@ -13,8 +13,10 @@ using Windows.Media.Editing;
 using Windows.Media.MediaProperties;
 using Windows.Media.Transcoding;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
 using Windows.UI.Core;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace MovieMaker.ViewModel
 {
@@ -105,8 +107,8 @@ namespace MovieMaker.ViewModel
             if (pickedFile != null)
             {
                 PanelElement element = new PanelElement();
-                element.Thumbnail = await pickedFile.GetThumbnailAsync(Windows.Storage.FileProperties.ThumbnailMode.VideosView);
-                element.Clip = await AddClipAsync(pickedFile).ConfigureAwait(true);
+                element.Name = pickedFile.Name;
+                element.Clip = await AddClipAsync(pickedFile, element).ConfigureAwait(true);
 
                 PanelElements.Add(element);
             }
@@ -118,21 +120,40 @@ namespace MovieMaker.ViewModel
                 picker.FileTypeFilter.Add(format);
             }
         }
-        private async Task<MediaClip> AddClipAsync(StorageFile pickedFile)
+        private async Task<MediaClip> AddClipAsync(StorageFile pickedFile, PanelElement element)
         {
             MediaClip clip;
             bool isPhoto = PickedFileIsPhoto(pickedFile);
 
             if (isPhoto)
             {
+                using (StorageItemThumbnail thumbnail = await pickedFile.GetThumbnailAsync(ThumbnailMode.PicturesView))
+                {
+                    if (thumbnail != null)
+                    {
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.SetSource(thumbnail);
+
+                        element.Thumbnail = bitmapImage;
+                    }
+                }
                 clip = await MediaClip.CreateFromImageFileAsync(pickedFile, TimeSpan.FromSeconds(5));
             }
             else
             {
+                using (StorageItemThumbnail thumbnail = await pickedFile.GetThumbnailAsync(ThumbnailMode.VideosView))
+                {
+                    if (thumbnail != null)
+                    {
+                        BitmapImage bitmapImage = new BitmapImage();
+                        bitmapImage.SetSource(thumbnail);
+
+                        element.Thumbnail = bitmapImage;
+                    }
+                }
                 clip = await MediaClip.CreateFromFileAsync(pickedFile);
             }
             
-            composition.Clips.Add(clip);
             return clip;
         }
 
