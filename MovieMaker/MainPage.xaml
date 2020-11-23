@@ -8,6 +8,7 @@
     xmlns:vm="using:MovieMaker.ViewModel" 
     xmlns:model="using:MovieMaker.Models"
     mc:Ignorable="d"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Resources>
         <ResourceDictionary>
@@ -70,7 +71,18 @@
         </MediaPlayerElement>
 
         <Grid Grid.Row="1" Opacity="0.7" Background="Black" Visibility="{x:Bind ViewModel.PanelElementIsSelected ,Mode=OneWay}">
-
+            <controls:RangeSelector x:Name="RangeSelectorControl"
+                                    Minimum="{x:Bind ViewModel.SelectedPanelElement.Clip.TrimTimeFromStart.TotalSeconds,Mode=OneWay}" 
+                                    Maximum="{x:Bind ViewModel.SelectedPanelElement.Clip.OriginalDuration.TotalSeconds,Mode=OneWay}"
+                                    Visibility="{x:Bind ViewModel.SelectedPanelElement.IsVideo, Mode=OneWay}"
+                                    Width="800"
+                                    StepFrequency="0.1"/>
+            <StackPanel Visibility="{x:Bind ViewModel.SelectedPanelElement.IsVideo, Mode=OneWay}">
+                <TextBlock ></TextBlock>
+            </StackPanel>
+            <TextBox Text="{x:Bind ViewModel.SelectedPanelElement.Clip.OriginalDuration,Mode=OneWay}"
+                     Visibility="{x:Bind ViewModel.SelectedPanelElement.IsPicture, Mode=OneWay}">
+            </TextBox>
         </Grid>
         <Grid Grid.Row="2" Background="Black" Opacity="0.5">
             <ListView x:Name="panelElements"

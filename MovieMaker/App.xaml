@@ -6,7 +6,6 @@
     xmlns:converter="using:MovieMaker.Helpers"
     >
     <Application.Resources>
-        <converter:ThumbnailToImageConverter x:Key="ToImageConverter" />
         <converter:IntToVisibility x:Key="IntToVisibility" />
     </Application.Resources>
 </Application>

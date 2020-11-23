@@ -110,7 +110,6 @@ namespace MovieMaker.ViewModel
                 element.FileType = PickedFileIsPicture(pickedFile) ? FileType.Picture : FileType.Video;
                 element.Name = pickedFile.Name;
                 element.Clip = await AddClipAsync(pickedFile, element).ConfigureAwait(true);
-
                 PanelElements.Add(element);
             }
         }

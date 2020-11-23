@@ -12,6 +12,9 @@ namespace MovieMaker.Models
         private string name;
         private FileType fileType;
 
+        public bool IsPicture { get => this.FileType == FileType.Picture; }
+        public bool IsVideo { get => this.FileType == FileType.Video; }
+
         public FileType FileType
         {
             get => fileType;
