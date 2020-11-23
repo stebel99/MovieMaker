@@ -10,6 +10,20 @@ namespace MovieMaker.Models
         private MediaClip clip;
         private BitmapImage thumbnail;
         private string name;
+        private FileType fileType;
+
+        public FileType FileType
+        {
+            get => fileType;
+            set
+            {
+                if (fileType != value)
+                {
+                    fileType = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public string Name
         {

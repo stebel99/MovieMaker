@@ -107,6 +107,7 @@ namespace MovieMaker.ViewModel
             if (pickedFile != null)
             {
                 PanelElement element = new PanelElement();
+                element.FileType = PickedFileIsPicture(pickedFile) ? FileType.Picture : FileType.Video;
                 element.Name = pickedFile.Name;
                 element.Clip = await AddClipAsync(pickedFile, element).ConfigureAwait(true);
 
@@ -120,12 +121,11 @@ namespace MovieMaker.ViewModel
                 picker.FileTypeFilter.Add(format);
             }
         }
-        private async Task<MediaClip> AddClipAsync(StorageFile pickedFile, PanelElement element)
+        private static async Task<MediaClip> AddClipAsync(StorageFile pickedFile, PanelElement element)
         {
             MediaClip clip;
-            bool isPhoto = PickedFileIsPhoto(pickedFile);
 
-            if (isPhoto)
+            if (element.FileType == FileType.Picture)
             {
                 using (StorageItemThumbnail thumbnail = await pickedFile.GetThumbnailAsync(ThumbnailMode.PicturesView))
                 {
@@ -153,11 +153,11 @@ namespace MovieMaker.ViewModel
                 }
                 clip = await MediaClip.CreateFromFileAsync(pickedFile);
             }
-            
+
             return clip;
         }
 
-        private static bool PickedFileIsPhoto(StorageFile pickedFile)
+        private static bool PickedFileIsPicture(StorageFile pickedFile)
         {
             bool result = false;
 
