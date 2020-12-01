@@ -22,6 +22,7 @@ namespace MovieMaker.ViewModel
 {
     public class MainPageViewModel : NotifyPropertyChanged
     {
+
         public ObservableCollection<PanelElement> PanelElements;
 
         private PanelElement selectedPanelElement;
@@ -31,11 +32,6 @@ namespace MovieMaker.ViewModel
 
         private MediaComposition composition;
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //private void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        //{
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        //}
 
         public MainPageViewModel()
         {
