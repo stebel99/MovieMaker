@@ -1,5 +1,6 @@
 ﻿using MovieMaker.Helpers;
 using MovieMaker.Models;
+using MovieMaker.View;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace MovieMaker.ViewModel
@@ -24,7 +27,6 @@ namespace MovieMaker.ViewModel
     {
 
         public ObservableCollection<PanelElement> PanelElements;
-
         private PanelElement selectedPanelElement;
         private bool panelElementIsSelected;
 
@@ -38,7 +40,8 @@ namespace MovieMaker.ViewModel
             composition = new MediaComposition();
             PanelElements = new ObservableCollection<PanelElement>();
         }
-        public MainPageViewModel(ObservableCollection<PanelElement> panelElements)
+
+         public MainPageViewModel(ObservableCollection<PanelElement> panelElements)
         {
             PanelElements = panelElements;
         }
@@ -174,6 +177,12 @@ namespace MovieMaker.ViewModel
             mediaComposition.Clips.Add(clip);
 
             MediaSource = MediaSource.CreateFromMediaStreamSource(mediaComposition.GenerateMediaStreamSource());
+        }
+
+        public void GoToTrimView()
+        {
+            var frame = (Frame)Window.Current.Content;
+            frame.Navigate(typeof(TrimPage), SelectedPanelElement);
         }
     }
 }

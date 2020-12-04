@@ -8,6 +8,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -50,6 +51,7 @@ namespace MovieMaker
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
+                rootFrame.Navigated += RootFrame_Navigated;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
@@ -58,6 +60,7 @@ namespace MovieMaker
 
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
+                SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
             }
 
             if (e.PrelaunchActivated == false)
@@ -72,6 +75,23 @@ namespace MovieMaker
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        private void App_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            if (rootFrame.CanGoBack)
+            {
+                e.Handled = true;
+                rootFrame.GoBack();
+            }
+        }
+
+        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                ((Frame)sender).CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
         }
 
         /// <summary>

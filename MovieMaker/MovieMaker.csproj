@@ -130,6 +130,10 @@
     <Compile Include="Models\PanelElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
+    <Compile Include="ViewModel\TrimPageViewModel.cs" />
+    <Compile Include="View\TrimPage.xaml.cs">
+      <DependentUpon>TrimPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -156,6 +160,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\MainPageStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\TrimPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,4 +1,5 @@
-﻿using MovieMaker.ViewModel;
+﻿using MovieMaker.Models;
+using MovieMaker.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,21 +15,30 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace MovieMaker
+namespace MovieMaker.View
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class TrimPage : Page
     {
-        public MainPageViewModel ViewModel { get; set; } = new MainPageViewModel();
-        public MainPage()
+        public TrimPageViewModel ViewModel { get; set; }
+
+        public TrimPage()
         {
             this.InitializeComponent();
-            this.NavigationCacheMode = NavigationCacheMode.Enabled;
             this.DataContext = ViewModel;
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e?.Parameter!=null)
+            {
+                PanelElement panelElement = (PanelElement)e.Parameter;
+                ViewModel = new TrimPageViewModel(panelElement);
+            }
         }
     }
 }

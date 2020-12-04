@@ -1,0 +1,32 @@
+﻿<Page
+    x:Class="MovieMaker.View.TrimPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MovieMaker.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="1,0" EndPoint="0,1">
+                <GradientStop Color="#280a2e" Offset="0"/>
+                <GradientStop Color="#12252b" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <MediaPlayerElement Grid.Row="0" Source="{x:Bind ViewModel.MediaSource, Mode=OneWay}"
+                            Background="Transparent"
+                            AutoPlay="False"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            AreTransportControlsEnabled="True"
+                            MaxWidth="1000">
+            
+        </MediaPlayerElement>
+    </Grid>
+</Page>
