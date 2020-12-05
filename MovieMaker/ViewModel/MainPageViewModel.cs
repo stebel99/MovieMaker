@@ -19,15 +19,16 @@ using Windows.Storage.Pickers;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace MovieMaker.ViewModel
 {
     public class MainPageViewModel : NotifyPropertyChanged
     {
-
         public ObservableCollection<PanelElement> PanelElements;
         private PanelElement selectedPanelElement;
+        private PanelElement changedPanelElement;
         private bool panelElementIsSelected;
 
         private MediaSource mediaSource;
@@ -41,7 +42,7 @@ namespace MovieMaker.ViewModel
             PanelElements = new ObservableCollection<PanelElement>();
         }
 
-         public MainPageViewModel(ObservableCollection<PanelElement> panelElements)
+        public MainPageViewModel(ObservableCollection<PanelElement> panelElements)
         {
             PanelElements = panelElements;
         }
@@ -64,7 +65,7 @@ namespace MovieMaker.ViewModel
             get { return selectedPanelElement; }
             set
             {
-                if (selectedPanelElement != value && value != null)
+                if (selectedPanelElement != value)
                 {
                     selectedPanelElement = value;
                     OnPropertyChanged();
@@ -87,6 +88,19 @@ namespace MovieMaker.ViewModel
             }
         }
 
+        public PanelElement ChangedPanelElement
+        {
+            get { return changedPanelElement; }
+            set
+            {
+                if (changedPanelElement != value)
+                {
+                    changedPanelElement = value;
+                    SelectedPanelElement = ChangedPanelElement;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public async Task PickFileAndAddClipAsync()
         {
@@ -108,6 +122,7 @@ namespace MovieMaker.ViewModel
                 PanelElement element = new PanelElement();
                 element.FileType = PickedFileIsPicture(pickedFile) ? FileType.Picture : FileType.Video;
                 element.Name = pickedFile.Name;
+                element.StorageFile = pickedFile;
                 element.Clip = await AddClipAsync(pickedFile, element).ConfigureAwait(true);
                 PanelElements.Add(element);
             }
@@ -172,17 +187,23 @@ namespace MovieMaker.ViewModel
 
         public void PanelElementChanged()
         {
-            var clip = SelectedPanelElement.Clip.Clone();
-            var mediaComposition = new MediaComposition();
-            mediaComposition.Clips.Add(clip);
+            if (SelectedPanelElement!=null)
+            {
+                var clip = SelectedPanelElement.Clip.Clone();
+                var mediaComposition = new MediaComposition();
+                mediaComposition.Clips.Add(clip);
 
-            MediaSource = MediaSource.CreateFromMediaStreamSource(mediaComposition.GenerateMediaStreamSource());
+                MediaSource = MediaSource.CreateFromMediaStreamSource(mediaComposition.GenerateMediaStreamSource());
+            }
         }
 
         public void GoToTrimView()
         {
             var frame = (Frame)Window.Current.Content;
-            frame.Navigate(typeof(TrimPage), SelectedPanelElement);
+            frame.Navigate(typeof(TrimPage), SelectedPanelElement, new EntranceNavigationTransitionInfo());
+
+            SelectedPanelElement = null;
+            PanelElementIsSelected = false;
         }
     }
 }

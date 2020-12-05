@@ -1,5 +1,7 @@
 ﻿using MovieMaker.Helpers;
+using Windows.Media.Core;
 using Windows.Media.Editing;
+using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.UI.Xaml.Media.Imaging;
 
@@ -11,7 +13,9 @@ namespace MovieMaker.Models
         private BitmapImage thumbnail;
         private string name;
         private FileType fileType;
+        private StorageFile storageFile;
 
+        public MediaSource GetMediaSource () => MediaSource.CreateFromStorageFile(StorageFile);
         public bool IsPicture { get => this.FileType == FileType.Picture; }
         public bool IsVideo { get => this.FileType == FileType.Video; }
 
@@ -23,6 +27,18 @@ namespace MovieMaker.Models
                 if (fileType != value)
                 {
                     fileType = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+        public StorageFile StorageFile
+        {
+            get => storageFile;
+            set
+            {
+                if (storageFile != value)
+                {
+                    storageFile = value;
                     OnPropertyChanged();
                 }
             }
@@ -48,7 +64,8 @@ namespace MovieMaker.Models
                 if (clip != value)
                 {
                     clip = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(PanelElement));
+
                 }
             } 
         }
@@ -64,6 +81,8 @@ namespace MovieMaker.Models
                 }
             }
         }
+
+
 
         public PanelElement()
         {

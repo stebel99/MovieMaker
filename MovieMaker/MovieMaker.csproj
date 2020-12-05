@@ -122,7 +122,7 @@
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\IntToVisibility.cs" />
     <Compile Include="Helpers\NotifyPropertyChanged.cs" />
-    <Compile Include="Helpers\TimeSpanToDouble.cs" />
+    <Compile Include="Helpers\DoubleToTimeSpan.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

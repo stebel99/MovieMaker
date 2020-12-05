@@ -7,5 +7,7 @@
     >
     <Application.Resources>
         <converter:IntToVisibility x:Key="IntToVisibility" />
+        <converter:DoubleToTimeSpan x:Key="DoubleToTimeSpan" />
+
     </Application.Resources>
 </Application>

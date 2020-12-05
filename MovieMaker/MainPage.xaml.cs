@@ -1,4 +1,6 @@
-﻿using MovieMaker.ViewModel;
+﻿using MovieMaker.Models;
+using MovieMaker.View;
+using MovieMaker.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.IO;

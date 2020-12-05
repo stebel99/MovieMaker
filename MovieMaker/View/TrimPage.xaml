@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
@@ -19,14 +20,38 @@
                 <GradientStop Color="#12252b" Offset="1"/>
             </LinearGradientBrush>
         </Grid.Background>
-        <MediaPlayerElement Grid.Row="0" Source="{x:Bind ViewModel.MediaSource, Mode=OneWay}"
-                            Background="Transparent"
+        <Grid Grid.Row="0" Background="Transparent">
+            <MediaPlayerElement  Source="{x:Bind ViewModel.MediaSource, Mode=TwoWay}"
                             AutoPlay="False"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             AreTransportControlsEnabled="True"
-                            MaxWidth="1000">
-            
-        </MediaPlayerElement>
+                            MaxWidth="1000"
+                            >
+            </MediaPlayerElement>
+        </Grid>
+        <Grid Grid.Row="1" Background="Black" Opacity="0.5">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="20">
+                <TextBlock Text="{Binding ElementName=RangeSelectorControl, Path=RangeMin, Mode=OneWay, Converter={StaticResource DoubleToTimeSpan}}"/>
+                <controls:RangeSelector x:Name="RangeSelectorControl"
+                                Width="800"
+                                StepFrequency="0.1"
+                                Margin="20"
+                                Minimum="{x:Bind ViewModel.Min, Mode=OneWay}"
+                                Maximum="{x:Bind ViewModel.Max, Mode=OneWay}"
+                                RangeMin="{x:Bind ViewModel.MinTrim, Mode=TwoWay}"
+                                RangeMax="{x:Bind ViewModel.MaxTrim, Mode=TwoWay}"
+                               >
+                </controls:RangeSelector>
+                <TextBlock Text="{Binding ElementName=RangeSelectorControl, Path=RangeMax, Mode=OneWay, Converter={StaticResource DoubleToTimeSpan}}"/>
+            </StackPanel>
+            <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20" Background="Transparent"
+                    Click="{x:Bind ViewModel.TrimVideo}">
+                <StackPanel Orientation="Vertical">
+                    <SymbolIcon Symbol="Accept"/>
+                    <TextBlock Text="Ok"/>
+                </StackPanel>
+            </Button>
+        </Grid>
     </Grid>
 </Page>
