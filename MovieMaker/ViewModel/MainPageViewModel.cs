@@ -33,12 +33,8 @@ namespace MovieMaker.ViewModel
 
         private MediaSource mediaSource;
 
-        private MediaComposition composition;
-
-
         public MainPageViewModel()
         {
-            composition = new MediaComposition();
             PanelElements = new ObservableCollection<PanelElement>();
         }
 
@@ -119,10 +115,12 @@ namespace MovieMaker.ViewModel
 
             if (pickedFile != null)
             {
-                PanelElement element = new PanelElement();
-                element.FileType = PickedFileIsPicture(pickedFile) ? FileType.Picture : FileType.Video;
-                element.Name = pickedFile.Name;
-                element.StorageFile = pickedFile;
+                PanelElement element = new PanelElement
+                {
+                    FileType = PickedFileIsPicture(pickedFile) ? FileType.Picture : FileType.Video,
+                    Name = pickedFile.Name,
+                    StorageFile = pickedFile
+                };
                 element.Clip = await AddClipAsync(pickedFile, element).ConfigureAwait(true);
                 PanelElements.Add(element);
             }
@@ -201,9 +199,6 @@ namespace MovieMaker.ViewModel
         {
             var frame = (Frame)Window.Current.Content;
             frame.Navigate(typeof(TrimPage), SelectedPanelElement, new EntranceNavigationTransitionInfo());
-
-            SelectedPanelElement = null;
-            PanelElementIsSelected = false;
         }
     }
 }

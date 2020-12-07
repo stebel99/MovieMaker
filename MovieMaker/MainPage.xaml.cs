@@ -32,5 +32,14 @@ namespace MovieMaker
             this.NavigationCacheMode = NavigationCacheMode.Enabled;
             this.DataContext = ViewModel;
         }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (ViewModel?.SelectedPanelElement != null)
+            {
+                ViewModel.PanelElementChanged();
+            }
+            base.OnNavigatedTo(e);
+        }
     }
 }

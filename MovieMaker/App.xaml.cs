@@ -53,7 +53,7 @@ namespace MovieMaker
                 rootFrame.NavigationFailed += OnNavigationFailed;
                 rootFrame.Navigated += RootFrame_Navigated;
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
+                if (e?.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
                     //TODO: Load state from previously suspended application
                 }

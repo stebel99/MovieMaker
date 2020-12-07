@@ -23,7 +23,7 @@ namespace MovieMaker.ViewModel
 
         private PanelElement panelElement;
         private MediaSource mediaSource;
-        private MediaComposition composition;
+        private readonly MediaComposition composition;
         private ImageSource imageSource;
         public TrimPageViewModel() : this(new PanelElement()) { }
         public TrimPageViewModel(PanelElement panelElement)
@@ -163,7 +163,7 @@ namespace MovieMaker.ViewModel
             GoBack();
         }
 
-        private void GoBack()
+        private static void GoBack()
         {
             var frame = (Frame)Window.Current.Content;
             if (frame.CanGoBack)

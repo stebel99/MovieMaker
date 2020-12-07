@@ -129,6 +129,7 @@
     <Compile Include="Models\FileType.cs" />
     <Compile Include="Models\PanelElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\ArrangeClipsViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\TrimPageViewModel.cs" />
     <Compile Include="View\TrimPage.xaml.cs">
