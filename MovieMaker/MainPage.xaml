@@ -102,6 +102,7 @@
                       AllowDrop="True"
                       CanReorderItems="True"
                       IsSwipeEnabled="True"
+                      ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                       ScrollViewer.HorizontalScrollMode="Enabled"
                       ScrollViewer.VerticalScrollMode="Disabled">
                 <ListView.ItemsPanel>
@@ -133,7 +134,8 @@
                         <TextBlock Text="Add Clip"/>
                     </StackPanel>
                 </Button>
-                <Button Background="Transparent">
+                <Button Background="Transparent"
+                        Click="{x:Bind ViewModel.GoToArrangeClipsView}">
                     <StackPanel>
                         <SymbolIcon Symbol="ViewAll" Margin="0,-5,0,5"/>
                         <TextBlock Text="Arrange Clips"/>

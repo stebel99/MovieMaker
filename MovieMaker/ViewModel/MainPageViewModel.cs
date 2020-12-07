@@ -200,5 +200,11 @@ namespace MovieMaker.ViewModel
             var frame = (Frame)Window.Current.Content;
             frame.Navigate(typeof(TrimPage), SelectedPanelElement, new EntranceNavigationTransitionInfo());
         }
+
+        public void GoToArrangeClipsView()
+        {
+            var frame = (Frame)Window.Current.Content;
+            frame.Navigate(typeof(ArrangeClips), PanelElements, new EntranceNavigationTransitionInfo());
+        }
     }
 }

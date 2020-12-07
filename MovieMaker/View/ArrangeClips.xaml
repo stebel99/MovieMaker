@@ -1,0 +1,52 @@
+﻿<Page
+    x:Class="MovieMaker.View.ArrangeClips"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:MovieMaker.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:MovieMaker.Models"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <GridView x:Name="panelElements" Grid.Row="0"
+                      ItemsSource="{x:Bind ViewModel.PanelElements}"
+                      SelectionMode="Single"  CornerRadius="5" Margin="20,10,20,60" Padding="0,0,0,10"
+                      Visibility="{x:Bind ViewModel.PanelElements.Count ,Mode=OneWay , Converter={StaticResource IntToVisibility}}"
+                      CanDragItems="True"
+                      AllowDrop="True"
+                      CanReorderItems="True"
+                      IsSwipeEnabled="True">
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType="model:PanelElement" >
+                    <Border Background="Black" CornerRadius="5"
+                                BorderThickness="2" BorderBrush="Gray" Padding="15,0,15,0" Height="80" Width="140">
+                        <Image Source="{x:Bind Thumbnail , Mode=OneWay}" />
+                    </Border>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20" Background="Transparent"
+                    Click="{x:Bind ViewModel.ArrangeClips}">
+                    <StackPanel Orientation="Vertical">
+                        <SymbolIcon Symbol="Accept"/>
+                        <TextBlock Text="Ok"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

@@ -132,6 +132,9 @@
     <Compile Include="ViewModel\ArrangeClipsViewModel.cs" />
     <Compile Include="ViewModel\MainPageViewModel.cs" />
     <Compile Include="ViewModel\TrimPageViewModel.cs" />
+    <Compile Include="View\ArrangeClips.xaml.cs">
+      <DependentUpon>ArrangeClips.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\TrimPage.xaml.cs">
       <DependentUpon>TrimPage.xaml</DependentUpon>
     </Compile>
@@ -161,6 +164,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Styles\MainPageStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ArrangeClips.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
